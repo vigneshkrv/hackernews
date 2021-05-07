@@ -3,16 +3,32 @@ import axios from "axios";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Table from "../Components/table";
-
+const tableHeaders = [
+  { colRef: "title", colLabel: "Title" },
+  { colRef: "by", colLabel: "Author" },
+  { colRef: "url", colLabel: "URL" },
+  { colRef: "score", colLabel: "Score" },
+  { colRef: "time", colLabel: "Created Time" },
+  { colRef: "type", colLabel: "Type" },
+];
+const secondTableHeaders = [
+  { colRef: "title", colLabel: "Title" },
+  { colRef: "by", colLabel: "Author" },
+  { colRef: "text", colLabel: "Text" },
+  { colRef: "score", colLabel: "Score" },
+  { colRef: "time", colLabel: "Created Time" },
+  { colRef: "type", colLabel: "Type" },
+];
 export default function Home() {
   const [type, setType] = useState({ label: "Top", value: "topstories" });
   const [data, setData] = useState([]);
+  const [header, setHeader] = useState(tableHeaders);
   const [isFetching, setIsFetching] = useState(false);
 
   const fetchData = () => {
     setIsFetching(true);
     axios
-      .get(`/api/hello/`, {
+      .get(`/api/hackerApi/`, {
         params: {
           type: type.value,
         },
@@ -35,7 +51,11 @@ export default function Home() {
   }, [type]);
 
   const onChangeOption = (option) => {
-    console.log(option);
+    if (option.label === "Ask") {
+      setHeader(secondTableHeaders);
+    } else {
+      setHeader(tableHeaders);
+    }
     setType(option);
   };
   return (
@@ -45,6 +65,7 @@ export default function Home() {
           <Table
             tableName="HackerNews"
             tableData={data}
+            tableHeaders={header}
             type={type}
             isFetching={isFetching}
             color="#1DA1F2"
