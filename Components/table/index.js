@@ -2,19 +2,9 @@ import React, { Component } from "react";
 import { ColHeader, Tablepagination, PagesizeSelect } from "../tableComponents";
 import { sortArray, searchArray } from "../tableComponents/helpers";
 import "../../styles/component.module.css";
+import TableRow from "../TableRow";
 import Spinner from "react-bootstrap/Spinner";
 import Selector from "../Selector";
-import moment from "moment";
-
-const tableHeaders = [
-  { colRef: "title", colLabel: "Title" },
-  { colRef: "by", colLabel: "Author" },
-  { colRef: "url", colLabel: "URL" },
-  { colRef: "score", colLabel: "Score" },
-
-  { colRef: "time", colLabel: "Created Time" },
-  { colRef: "type", colLabel: "Type" },
-];
 
 const options = [
   { label: "Top", value: "topstories" },
@@ -22,35 +12,11 @@ const options = [
   { label: "Show", value: "showstories" },
   { label: "Job", value: "jobstories" },
 ];
-const openNewTab = (url) => {
-  window.open(url, "_blank");
-};
-
-const AlertRow = ({ alert, key, headers }) => {
-  return (
-    <tr className="bg-table" key={key}>
-      {tableHeaders.map((item) => {
-        if (item.colRef === "time") {
-          return (
-            <td>{moment.unix(alert[item.colRef]).format("MMMM Do YYYY")}</td>
-          );
-        }
-        if (item.colRef === "url") {
-          return (
-            <td onClick={() => openNewTab(alert[item.colRef])}>
-              <a href="#">{alert[item.colRef]}</a>
-            </td>
-          );
-        }
-        return <td>{alert[item.colRef]}</td>;
-      })}
-    </tr>
-  );
-};
 
 export class Table extends Component {
   state = {
     tableData: [],
+    tableHeaders: [],
     isFetching: this.props,
     color: this.props,
     pageNumber: 0,
@@ -60,12 +26,14 @@ export class Table extends Component {
   componentDidUpdate(prevProps) {
     if (this.props != prevProps) {
       this.setState({ tableData: this.props.tableData });
+      this.setState({ tableHeaders: this.props.tableHeaders });
       this.setState({ isFetching: this.props.isFetching });
     }
   }
   constructor(props) {
     super(props);
     this.state.tableData = props.tableData;
+    this.state.tableHeaders = props.tableHeaders;
     this.state.isFetching = props.isFetching;
   }
 
@@ -98,7 +66,14 @@ export class Table extends Component {
     return false;
   };
   render() {
-    const { tableData, pageNumber, pageSize, sortBy, isFetching } = this.state;
+    const {
+      tableData,
+      pageNumber,
+      pageSize,
+      sortBy,
+      isFetching,
+      tableHeaders,
+    } = this.state;
     const Result = searchArray(tableData, this.state.searchValue) || [];
     const total = Result.length;
     const startItem = pageNumber * pageSize + 1;
@@ -178,7 +153,11 @@ export class Table extends Component {
                     </thead>
                     <tbody>
                       {alertData.map((alert, index) => (
-                        <AlertRow alert={alert} key={index} />
+                        <TableRow
+                          alert={alert}
+                          key={index}
+                          headers={tableHeaders}
+                        />
                       ))}
                     </tbody>
                   </table>
