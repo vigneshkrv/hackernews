@@ -1,0 +1,21 @@
+.txt-management {
+  padding: 20px;
+  border-bottom: 1px;
+  font-weight: 500;
+}
+
+.form-report {
+  position: relative;
+}
+.form-report .btn {
+  background: transparent;
+  width: 47px;
+  position: absolute;
+  right: 0;
+  top: 0;
+  z-index: 2;
+  height: 100%;
+  border: 0;
+  color: #6c7293;
+  min-width: unset;
+}
