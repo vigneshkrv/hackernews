@@ -1,6 +1,13 @@
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
+Install the packages:
+
+```bash
+npm i 
+# or
+yarn add
+```
 
 First, run the development server:
 
@@ -10,9 +17,20 @@ npm run dev
 yarn dev
 ```
 
+
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
 You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+
+## Features
+
+- Constantly fetches data for every 1 Minute
+- Table with dropdown filter for types of posts
+- Click on the Columns to sort them Ascendingly or Descendingly
+- Paginated Table along with page size select in the top left
+- Search bar on the top right for searching results shown
+- On Selecting author gets you to profile page - used next/router
+- URLs should open up in the new Tab
 
 ## Learn More
 
