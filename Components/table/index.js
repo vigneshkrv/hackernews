@@ -62,7 +62,7 @@ export class Table extends Component {
 
   doSearch = (e) => {
     e.preventDefault();
-    this.setState({ pageNumber: 1 });
+    this.setState({ pageNumber: 0 });
     return false;
   };
   render() {
@@ -115,9 +115,10 @@ export class Table extends Component {
                         type="text"
                         className="form-control searchBar"
                         placeholder="Search title, user ..."
-                        onChange={(e) =>
-                          this.setState({ searchValue: e.target.value })
-                        }
+                        onChange={(e) => {
+                          this.setState({ searchValue: e.target.value });
+                          this.setState({ pageNumber: 0 });
+                        }}
                       />
                     </div>
                   </form>
@@ -167,7 +168,7 @@ export class Table extends Component {
                 onPageChange={this.onPageChange}
                 pageNumber={pageNumber}
                 pageSize={pageSize}
-                total={isFetching ? 0 : total}
+                total={total}
                 color={this.props.color}
               />
             </div>
