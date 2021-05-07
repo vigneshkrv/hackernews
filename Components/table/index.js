@@ -4,11 +4,14 @@ import { sortArray, searchArray } from "../tableComponents/helpers";
 import "../../styles/component.module.css";
 import Spinner from "react-bootstrap/Spinner";
 import Selector from "../Selector";
+import moment from "moment";
 
 const tableHeaders = [
   { colRef: "title", colLabel: "Title" },
   { colRef: "by", colLabel: "Author" },
   { colRef: "url", colLabel: "URL" },
+  { colRef: "score", colLabel: "Score" },
+
   { colRef: "time", colLabel: "Created Time" },
   { colRef: "type", colLabel: "Type" },
 ];
@@ -19,11 +22,26 @@ const options = [
   { label: "Show", value: "showstories" },
   { label: "Job", value: "jobstories" },
 ];
+const openNewTab = (url) => {
+  window.open(url, "_blank");
+};
 
 const AlertRow = ({ alert, key, headers }) => {
   return (
     <tr className="bg-table" key={key}>
       {tableHeaders.map((item) => {
+        if (item.colRef === "time") {
+          return (
+            <td>{moment.unix(alert[item.colRef]).format("MMMM Do YYYY")}</td>
+          );
+        }
+        if (item.colRef === "url") {
+          return (
+            <td onClick={() => openNewTab(alert[item.colRef])}>
+              <a href="#">{alert[item.colRef]}</a>
+            </td>
+          );
+        }
         return <td>{alert[item.colRef]}</td>;
       })}
     </tr>

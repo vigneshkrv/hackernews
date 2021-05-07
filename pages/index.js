@@ -8,25 +8,34 @@ export default function Home() {
   const [type, setType] = useState({ label: "Top", value: "topstories" });
   const [data, setData] = useState([]);
   const [isFetching, setIsFetching] = useState(false);
+
+  const fetchData = () => {
+    setIsFetching(true);
+    axios
+      .get(`/api/hello/`, {
+        params: {
+          type: type.value,
+        },
+      })
+      .then((res) => {
+        setData(res.data.data);
+        setIsFetching(false);
+      });
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, [type]);
+
   useEffect(() => {
     const interval = setInterval(() => {
-      console.log(type);
-      setIsFetching(true);
-      axios
-        .get(`/api/hello/`, {
-          params: {
-            type: type.value,
-          },
-        })
-        .then((res) => {
-          setData(res.data.data);
-          setIsFetching(false);
-        });
+      fetchData();
     }, 60 * 1000);
     return () => clearInterval(interval);
   }, [type]);
 
   const onChangeOption = (option) => {
+    console.log(option);
     setType(option);
   };
   return (
