@@ -1,24 +1,15 @@
-import Head from "next/head";
-import styles from "../styles/Home.module.css";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
-import Select from "react-select";
 import Table from "../Components/table";
 
-const options = [
-  { label: "Top", value: "topstories" },
-  { label: "Ask", value: "askstories" },
-  { label: "Show", value: "showstories" },
-  { label: "Job", value: "jobstories" },
-];
 export default function Home() {
   const [type, setType] = useState({ label: "Top", value: "topstories" });
   const [data, setData] = useState([]);
   const [isFetching, setIsFetching] = useState(false);
-  useEffect(() => {
+
+  const fetchData = () => {
     setIsFetching(true);
     axios
       .get(`/api/hello/`, {
@@ -30,9 +21,21 @@ export default function Home() {
         setData(res.data.data);
         setIsFetching(false);
       });
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, [type]);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      fetchData();
+    }, 60 * 1000);
+    return () => clearInterval(interval);
   }, [type]);
 
   const onChangeOption = (option) => {
+    console.log(option);
     setType(option);
   };
   return (
