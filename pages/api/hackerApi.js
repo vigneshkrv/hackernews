@@ -23,6 +23,15 @@ export default async (req, res) => {
       });
       res.status(200).json({ data: finalResult });
     }
+    if (req.method === "POST") {
+      axios
+        .get(
+          `https://hacker-news.firebaseio.com/v0/user/${req.query.name}.json?print=pretty`
+        )
+        .then((resp) => {
+          res.status(200).json({ data: resp.data });
+        });
+    }
   } catch (error) {
     console.log(error);
     res.status(500).json({ data: error });
